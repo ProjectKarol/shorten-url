@@ -77,3 +77,24 @@ Tests cover the controllers, to run them use:
 ```bash
 npm test
 ```
+
+### To test endpoint run in console
+
+```bash
+wget --quiet \
+  --method POST \
+  --header 'Accept: */*' \
+  --header 'User-Agent: Thunder Client (https://www.thunderclient.com)' \
+  --header 'Content-Type: application/json' \
+  --body-data '{\n  "url" : "https://www.washmen.com/finery/blouse-p-1925865?cityId=994892-asda0-123-asdqw&clusterId=439892"\n}' \
+  --output-document \
+  - http://localhost:8081/v1/convert/url-to-deeplink
+```
+
+### VS Code debugging
+
+To run  debugger in VS Code go to "debugger" tab and run  debug app
+
+## To Do
+
+1. Add Dependency Injection
