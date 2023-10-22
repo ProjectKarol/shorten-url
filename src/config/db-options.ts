@@ -2,37 +2,38 @@ import path from 'path';
 import { DataSourceOptions, Logger } from 'typeorm';
 import { config } from './config';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import { createLogger } from 'winston';
 
 // If the parent directory is src, it is started with ts-node, otherwise it is pretranspiled and run with node.
 const isDev = path.dirname(__dirname).split(path.sep).pop() === 'src';
-
+const logger = createLogger();
 const TYPE_ORM_LOG_MESSAGE = 'typeorm:log';
 const dbLogger: Logger = {
   logQuery(query, parameters) {
-    console.log('typeorm:query', { query, parameters });
+    // console.log('typeorm:query', { query, parameters });
   },
   logQueryError(error, query, parameters) {
     throw new Error(`typeorm:error: ${error}, ${query}, ${parameters}`);
   },
   logQuerySlow(time, query, parameters) {
-    console.log('typeorm:slow', { time, query, parameters });
+    logger.log('typeorm:slow', { time, query, parameters });
   },
   logSchemaBuild(msg) {
-    console.log('typeorm:schema-build', { msg });
+    logger.log('typeorm:schema-build', { msg });
   },
   logMigration(msg) {
-    console.log('typeorm:migration', { msg });
+    logger.log('typeorm:migration', { msg });
   },
   log(level: 'log' | 'info' | 'warn', msg) {
     switch (level) {
       case 'log':
-        console.log(TYPE_ORM_LOG_MESSAGE, { level, msg });
+        logger.log(TYPE_ORM_LOG_MESSAGE, { level, msg });
         break;
       case 'info':
-        console.log(TYPE_ORM_LOG_MESSAGE, { level, msg });
+        logger.log(TYPE_ORM_LOG_MESSAGE, { level, msg });
         break;
       case 'warn':
-        console.log(TYPE_ORM_LOG_MESSAGE, { level, msg });
+        logger.log(TYPE_ORM_LOG_MESSAGE, { level, msg });
         break;
     }
   },
