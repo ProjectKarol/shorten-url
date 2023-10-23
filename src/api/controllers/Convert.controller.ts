@@ -12,7 +12,7 @@ export class ConvertController {
     try {
       const convertService = new ConvertService();
       const data = await convertService.createDeepLink(req);
-      res.status(StatusCodes.OK).json(data);
+      res.status(StatusCodes.CREATED).json(data);
     } catch (error) {
       throw logger.error(error);
     }
