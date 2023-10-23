@@ -14,7 +14,7 @@ env:
 
 jobs:
   annotations:
-    runs-on: self-hosted-org-master
+    runs-on: ubuntu-latest
     steps:
       - name: Notice about branch
         run: |

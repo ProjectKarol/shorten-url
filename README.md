@@ -5,6 +5,10 @@ Application to convert URL to shorten version
 
 ## Fist run
 
+```bash
+cp .env.example .env  
+```
+
 ## Running the project the simple way
 
 To simply run the project and start hacking away, just run
@@ -33,7 +37,7 @@ start:dev
 This script will run your TypeScript project without transpiling it to JavaScript. It's good for development purposes.
 
 ```bash
-build
+serve
 ```
 
  This script will transpile your TypeScript files into JavaScript files using the TypeScript compiler (tsc). The transpiled files will be saved in the dist directory as specified in your tsconfig.json.
@@ -80,15 +84,20 @@ npm test
 
 ### To test endpoint run in console
 
+Create Deep Link
+
 ```bash
-wget --quiet \
-  --method POST \
-  --header 'Accept: */*' \
-  --header 'User-Agent: Thunder Client (https://www.thunderclient.com)' \
-  --header 'Content-Type: application/json' \
-  --body-data '{\n  "url" : "https://www.washmen.com/finery/blouse-p-1925865?cityId=994892-asda0-123-asdqw&clusterId=439892"\n}' \
-  --output-document \
-  - http://localhost:8081/v1/convert/url-to-deeplink
+curl --location 'http://localhost:8081/v1/convert/url-to-deeplink' \
+--header 'Content-Type: application/json' \
+--data '{
+  "url" : "https://www.washmen.com/finery/blouse-p-1925865?cityId=994892-asda0-123-asdqw&clusterId=439892"
+}'
+```
+
+Get Deep Link
+
+```bash
+curl --location 'http://localhost:8081/v1/convert/deeplink-to-url?deeplink=washmen%3A%2F%2F%3FPage%3DProduct%26ContentId%3D1925865'
 ```
 
 ### VS Code debugging
