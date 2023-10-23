@@ -6,11 +6,16 @@ dotenv.config();
 
 const DEFAULT_PORT = 8081;
 const DEFAULT_DATABASE_PORT = 5432;
+const DEFAULT_HOST = 'www.washmen.com'
 
 export const tempConfig = convict({
   port: {
     env: 'ENV_NODE_PORT',
     default: DEFAULT_PORT,
+  },
+  host: {
+    env: 'ENV_URL_BASE',
+    default: DEFAULT_HOST,
   },
   database: {
     host: {

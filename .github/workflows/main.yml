@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - "**"
+    paths-ignore:
+      - ".github/**"
+      - "README.md"
+
+env:
+  SERVICE_NAME: shorten-url
+
+
+jobs:
+  annotations:
+    runs-on: self-hosted-org-master
+    steps:
+      - name: Notice about branch
+        run: |
+          text="executed from branch: `echo ${GITHUB_REF#refs/heads/}`"
+          echo "::notice::${text}"
+
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:11.5
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+          database.host: localhost
+        ports:
+          - 5432/tcp
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          # default is 1 -> only latest commit, in order to allow sonar to have knowledge about previous commit we grab all=0
+          fetch-depth: 0
+          
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: "npm"
+          cache-dependency-path: "package-lock.json"
+
+      - name: Setup npm version
+        run: npm i -g npm@9.6
+
+      - name: Install Dependencies
+        run: npm ci --ignore-scripts && rm -f .npmrc
+          
+      - name: Lint
+        run: npm run -s lint
+      - name: Build
+        run: npm run -s build
+      - name: Test
+        run: npm run -s test
+        env:
+          DATABASE_HOST: localhost
+          DATABASE_USERNAME: postgres
+          DATABASE_PASSWORD: postgres
+          DATABASE_DATABASE: postgres
+

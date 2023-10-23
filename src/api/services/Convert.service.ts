@@ -3,11 +3,12 @@ import {
 } from 'express';
 import { Conversion } from '../../entity/Conversion.entity';
 import { ConversionRepository } from '../../repository/Convert.repository';
+import { config } from '../../config/config';
 
-export class ConvertService {
+export class ConvertService { 
   constructor() { }
   conversionRepository = new ConversionRepository();
-  async create(url: Request): Promise<string> {
+  async createDeepLink(url: Request): Promise<string> {
     const urlPath = this.extractPathAndQuery(url.body);
     const deepLink = this.convertUrlToDeeplink(urlPath);
 
@@ -22,12 +23,18 @@ export class ConvertService {
     return deepLink;
   }
 
-  get = async (): Promise<void> => {
+  async getDeepLink(url: Request): Promise<string> {
+    const deepLink = url.query.deeplink as string;
+    const entity = await this.conversionRepository.getByContractorData(deepLink);
+
+    if (!entity) {
+      return 'Not Found';
+    }
+    return `https://${config.host}${entity.webUrl}`;
   }
 
 
   extractPathAndQuery(urlString: { url: string }): string {
-    console.log(urlString);
     const url = new URL(urlString.url);
     return url.pathname + url.search;
   }

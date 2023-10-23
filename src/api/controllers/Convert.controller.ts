@@ -8,10 +8,20 @@ import { createLogger } from 'winston';
 const logger = createLogger();
 
 export class ConvertController {
-  public static async create(req: Request, res: Response) {
+  public static async createDeepLink(req: Request, res: Response) {
     try {
       const convertService = new ConvertService();
-      const data = await convertService.create(req);
+      const data = await convertService.createDeepLink(req);
+      res.status(StatusCodes.OK).json(data);
+    } catch (error) {
+      throw logger.error(error);
+    }
+  }
+
+  public static async getDeepLink(req: Request, res: Response) {
+    try {
+      const convertService = new ConvertService();
+      const data = await convertService.getDeepLink(req);
       res.status(StatusCodes.OK).json(data);
     } catch (error) {
       throw logger.error(error);

@@ -10,10 +10,10 @@ export class ConversionRepository {
     this.repository = dbSource.manager.getRepository(Conversion);
   }
 
-  async getByContractorData(data: { id: string; }): Promise<Conversion | null> {
+  async getByContractorData(deep_link: string): Promise<Conversion | null> {
     const entity = await this.repository.findOne({
       where: {
-        id: data.id,
+        deepLink: deep_link,
 
       },
     });
@@ -36,12 +36,8 @@ export class ConversionRepository {
     return entity;
   }
 
-  async delete(entity: Conversion): Promise<void> {
-    await this.repository.remove(entity);
-  }
 
   async cleanupDatabase() {
-
     const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
     await this.repository.createQueryBuilder()
       .delete()

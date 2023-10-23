@@ -13,10 +13,13 @@
     "serve": "node dist/server.js",
     "prod": "npm run build && npm run serve",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d src/config/initializeDB.ts",
+    "lint": "eslint 'src/**/*.{ts,tsx,js,jsx}'",
+    "lint:fix": "npm run-script lint -- --fix",
     "migration:generate": "npm run typeorm migration:generate",
     "migration:revert": "npm run typeorm migration:revert",
     "migration:run": "npm run typeorm migration:run",
-    "test": "jest --detectOpenHandles --forceExit"
+    "test": "jest --detectOpenHandles --forceExit",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
@@ -42,6 +45,7 @@
     "@typescript-eslint/eslint-plugin": "^6.8.0",
     "@typescript-eslint/parser": "^6.8.0",
     "eslint": "^8.52.0",
+    "husky": "^8.0.3",
     "jest": "^29.7.0",
     "nodemon": "^3.0.1",
     "ts-jest": "^29.1.1",
