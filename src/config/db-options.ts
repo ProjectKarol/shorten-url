@@ -10,7 +10,7 @@ const logger = createLogger();
 const TYPE_ORM_LOG_MESSAGE = 'typeorm:log';
 const dbLogger: Logger = {
   logQuery(query, parameters) {
-    // console.log('typeorm:query', { query, parameters });
+    logger.log(TYPE_ORM_LOG_MESSAGE, { query, parameters });
   },
   logQueryError(error, query, parameters) {
     throw new Error(`typeorm:error: ${error}, ${query}, ${parameters}`);
